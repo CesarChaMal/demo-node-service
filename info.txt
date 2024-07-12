@@ -1,0 +1,3 @@
+npm init -y
+npm install express eureka-js-client axios
+/g/IdeaProjects/linuxScripts/git_create_in_github.sh demo-python-service
