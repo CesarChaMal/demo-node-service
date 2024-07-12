@@ -1,3 +1,6 @@
 npm init -y
 npm install express eureka-js-client axios
-/g/IdeaProjects/linuxScripts/git_create_in_github.sh demo-python-service
+node node_service.js
+curl -v -X POST http://localhost:3000/process -H "Content-Type: application/json" -d "{\"value\": 10}"
+
+

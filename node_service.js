@@ -1,12 +1,10 @@
 const express = require('express');
-const axios = require('axios');
+const bodyParser = require('body-parser');
 const { Eureka } = require('eureka-js-client');
 
-// Initialize the Express app
 const app = express();
-app.use(express.json());
+app.use(bodyParser.json());  // Middleware to parse JSON requests
 
-// Eureka client configuration
 const eurekaClient = new Eureka({
   instance: {
     app: 'node-service',
@@ -30,7 +28,6 @@ const eurekaClient = new Eureka({
   },
 });
 
-// Start Eureka client
 eurekaClient.start((error) => {
   if (error) {
     console.error('Error starting Eureka client:', error);
@@ -39,14 +36,20 @@ eurekaClient.start((error) => {
   }
 });
 
-// Define a simple endpoint
 app.post('/process', (req, res) => {
-  const { value } = req.body;
-  const result = value * 2; // Example processing
-  res.json({ result });
+  try {
+    console.log('Request body:', req.body);  // Debugging line
+    const { value } = req.body;
+    if (typeof value !== 'number') {
+      return res.status(400).json({ error: 'Value must be a number' });
+    }
+    const result = value * 2;
+    res.json({ result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Start the Express server
 const port = 3000;
 app.listen(port, () => {
   console.log(`Node service running on http://localhost:${port}`);
